@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// todo add ability target
+// todo add attributtes and cost?
 public sealed class GameplayAbilityComponent : MonoBehaviour
 {
     private void Error(string message)
@@ -31,8 +33,7 @@ public sealed class GameplayAbilityComponent : MonoBehaviour
     public T GrantAbility<T>() where T : GameplayAbility, new()
     {
         T ability = new T();
-        ability.SetOwner(this);
-        m_availableAbilities.Add(ability);
+        GrantAbility(ability);
         return ability;
     }
 
@@ -44,9 +45,17 @@ public sealed class GameplayAbilityComponent : MonoBehaviour
         }
 
         var ability = abilityType.InstantiateType();
-        ability.SetOwner(this);
-        m_availableAbilities.Add(ability);
+        GrantAbility(ability);
         return ability;
+    }
+
+    public void GrantAbility(GameplayAbility ability)
+    {
+        if(ability != null)
+        {
+            ability.SetOwner(this);
+            m_availableAbilities.Add(ability);
+        }
     }
 
     public bool RemoveAbility<T>() where T : GameplayAbility
@@ -94,7 +103,7 @@ public sealed class GameplayAbilityComponent : MonoBehaviour
             return false;
         }
 
-        if(m_runningAbilities.Contains(ability) || !ability.CanStart())
+        if(m_runningAbilities.Contains(ability) || ability.IsInCooldown || !ability.CanStart())
         {
             // this is running already or cannot start
             return false;
