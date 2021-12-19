@@ -21,9 +21,9 @@ using UnityEngine;
 [System.Serializable]
 public class AbilityExample : GameplayAbility
 {
-    public override void OnAbilityStarted()
+    public override void OnAbilityStarted(GameObject target)
     {
-        base.OnAbilityStarted();
+        base.OnAbilityStarted(target);
 
         var task = GameplayAbilityTask.NewTask<AbilityTaskTimer>(this);
         task.Seconds = 5;

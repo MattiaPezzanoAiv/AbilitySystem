@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// todo add ability target
-// todo add attributtes and cost?
+// todo add attributes and cost?
+// add statuses
 public sealed class GameplayAbilityComponent : MonoBehaviour
 {
     private void Error(string message)
@@ -88,7 +88,7 @@ public sealed class GameplayAbilityComponent : MonoBehaviour
         return true;
     }
 
-    public bool TryActivateAbility(GameplayAbility ability)
+    public bool TryActivateAbility(GameplayAbility ability, GameObject target = null)
     {
         if(ability is null)
         {
@@ -103,14 +103,14 @@ public sealed class GameplayAbilityComponent : MonoBehaviour
             return false;
         }
 
-        if(m_runningAbilities.Contains(ability) || ability.IsInCooldown || !ability.CanStart())
+        if(m_runningAbilities.Contains(ability) || ability.IsInCooldown || !ability.CanStart(target))
         {
             // this is running already or cannot start
             return false;
         }
 
         m_runningAbilities.Add(ability);
-        ability.OnAbilityStarted();
+        ability.OnAbilityStarted(target);
         ability.IsRunning = true;
 
         return true;

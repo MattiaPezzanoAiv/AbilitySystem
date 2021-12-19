@@ -29,12 +29,12 @@ public abstract class GameplayAbility
         this.OwningComponent = OwningComponent;
     }
 
-    public virtual bool CanStart()
+    public virtual bool CanStart(GameObject target)
     {
         return true;
     }
 
-    public virtual void OnAbilityStarted()
+    public virtual void OnAbilityStarted(GameObject target)
     {
     }
 
